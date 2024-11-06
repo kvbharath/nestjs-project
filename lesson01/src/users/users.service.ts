@@ -12,12 +12,17 @@ export class UsersService {
     return this.userRepository.findAll(role);
   }
 
-  findOne(id: number): Promise<User> {
+  async findOne(id: number): Promise<User> {
     return this.userRepository.findOne(id);
   }
 
   create(createUserDto: CreateUserDto): Promise<User> {
+    console.log('create', createUserDto);
+
     return this.userRepository.create(createUserDto);
+  }
+  async findByEmail(email: string): Promise<User> {
+    return this.userRepository.findByEmail(email);
   }
 
   update(id: number, updateUserDto: UpdateUserDto): Promise<User> {

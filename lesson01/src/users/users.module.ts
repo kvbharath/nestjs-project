@@ -1,19 +1,16 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
-import { AuthenticationMiddleware } from 'src/middleware/authentication.middleware';
 import { UserRepository } from './user.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user.entity';
+import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
+import { ApiTokenCheckMiddleware } from 'src/middleware/authentication.middleware';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
-  exports: [],
   controllers: [UsersController],
-  providers: [UsersService, UserRepository],
+  providers: [UsersService, UserRepository, CurrentUserInterceptor],
+  exports: [UsersService],
 })
-export class UsersModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthenticationMiddleware).forRoutes(UsersController);
-  }
-}
+export class UsersModule {}
