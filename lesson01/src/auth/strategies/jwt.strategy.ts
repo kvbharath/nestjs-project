@@ -11,9 +11,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: 'jwtsecretkey',
     });
   }
-  validate(payload: any) {
+  validate(jwtRespose: any) {
     console.log('Inside JWT validation');
-    console.log(payload);
-    return payload;
+    return jwtRespose;
   }
 }

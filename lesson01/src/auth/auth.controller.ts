@@ -20,15 +20,15 @@ export class AuthController {
   @Post('login')
   @UseGuards(LocalGuard)
   login(@Res() res: Response, @Req() req: Request) {
-    // const user = this.authService.validateUser(authpayload);
-    return sendResponse(res, req.user, 'User Logged in Successfully');
+    const localStrategyData = req.user;
+    return sendResponse(res, localStrategyData, 'User Logged in Successfully');
   }
 
   @Get('status')
   @UseGuards(JwtAuthGuard)
-  status(@Req() req: Request) {
+  status(@Req() req: Request, @Res() res: Response) {
     console.log('Inside AuthController status method');
-    console.log(req.user);
-    return req.user;
+    const jwtData = req.user;
+    return sendResponse(res, jwtData, 'User Logged in Successfully');
   }
 }
