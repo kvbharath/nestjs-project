@@ -15,6 +15,7 @@ export class AuthService {
 
     if (password === findUser.password) {
       const { password, ...user } = findUser;
+
       const token = this.jwtService.sign(user);
       return { user, token };
     }
