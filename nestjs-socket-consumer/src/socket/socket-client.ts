@@ -6,7 +6,11 @@ export class SocketClient implements OnModuleInit {
   public socketClient: Socket;
 
   constructor() {
-    this.socketClient = io('http://localhost:3000');
+    try {
+      this.socketClient = io('http://localhost:3000');
+    } catch (error) {
+      console.error('Error initializing Client:', error);
+    }
   }
 
   onModuleInit() {
@@ -17,9 +21,24 @@ export class SocketClient implements OnModuleInit {
     this.socketClient.on('connect', () => {
       console.log('Connected to gateway');
     });
+
+    // Listen for messages from the server
     this.socketClient.on('onMessage', (payload: any) => {
-      console.log('SocketClientClass!');
-      console.log(payload);
+      console.log('Received message:', payload);
+    });
+    // Handle connection errors
+    this.socketClient.on('connect_error', (error) => {
+      console.error('Connection error:', error.message);
+    });
+
+    // Handle disconnections
+    this.socketClient.on('disconnect', (reason) => {
+      console.warn('Disconnected from server:', reason);
+    });
+
+    // Listen for custom error events sent by the server
+    this.socketClient.on('error', (error) => {
+      console.error('Server error event:', error.message);
     });
   }
 }
