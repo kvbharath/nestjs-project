@@ -3,11 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { UserResolver } from './graphql/resolvers/userResolver';
+import { UserResolver } from './users/userResolver';
 import { UserSettingsResolver } from './graphql/resolvers/userSettingsResolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './graphql/models/user';
 import { UserSetting } from './graphql/models/userSetting';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -24,11 +25,11 @@ import { UserSetting } from './graphql/models/userSetting';
       database: 'graphql',
       entities: [User, UserSetting],
       synchronize: true,
-      // entities: ['dist/**/*.entity.js'],
-      // migrations: ['dist/db/migrations/*.js'],
+      logging: true,
     }),
+    UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService, UserResolver, UserSettingsResolver],
+  providers: [AppService],
 })
 export class AppModule {}
